@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+<body>
+    <div id="login-form">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="token"></p>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCovKwBqvovHO518GCGNjOxi1VRzj09DQs",
+            authDomain: "kindercastle-bec2d.firebaseapp.com",
+            databaseURL: "https://kindercastle-bec2d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "kindercastle-bec2d",
+            storageBucket: "kindercastle-bec2d.appspot.com",
+            messagingSenderId: "262493229709",
+            appId: "1:262493229709:web:0b340b33418f9c5c2f88c4",
+            measurementId: "G-NZN1LFQ2E6"
+          };
+
+        firebase.initializeApp(firebaseConfig);
+
+        function login() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Get the token
+                    userCredential.user.getIdToken().then(function(token) {
+                        console.log(token);
+                        document.getElementById('token').innerText = 'Token: ' + token;
+                    }).catch(function(error) {
+                        document.getElementById('token').innerText = 'Error getting token: ' + error.message;
+                    });
+                })
+                .catch((error) => {
+                    document.getElementById('token').innerText = 'Login Error: ' + error.message;
+                });
+        }
+    </script>
+</body>
+</html>
