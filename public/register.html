@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 <body>
-    <div id="login-form">
-        <h2>Login</h2>
+    <div id="register-form">
+        <h2>Register</h2>
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p><a href="/register">Register Here</a></p>
-        <p id="token"></p>
+        <button onclick="register()">Register</button>
+        <p><a href="/">Login Here</a></p>
+        <p id="message"></p>
     </div>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
@@ -31,21 +31,15 @@
 
         firebase.initializeApp(firebaseConfig);
 
-        function login() {
+        function register() {
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
-            firebase.auth().signInWithEmailAndPassword(email, password)
+            firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Get the token
-                    userCredential.user.getIdToken().then(function(token) {
-                        console.log(token);
-                        document.getElementById('token').innerText = 'Token: ' + token;
-                    }).catch(function(error) {
-                        document.getElementById('token').innerText = 'Error getting token: ' + error.message;
-                    });
+                    document.getElementById('message').innerText = 'Registration successful!';
                 })
                 .catch((error) => {
-                    document.getElementById('token').innerText = 'Login Error: ' + error.message;
+                    document.getElementById('message').innerText = 'Error: ' + error.message;
                 });
         }
     </script>
